@@ -4,7 +4,7 @@ const getAllPlayers = async (_req, res) => {
   try {
     const players = await knex("players");
     res.json(players);
-  } catch (err) {
+  } catch(err) {
     res.status(500).send(`Error retrieving players from the database: ${err}`);
   }
 };
@@ -13,7 +13,7 @@ const getPlayersByTeam = async (req, res) => {
   try {
     const players = await knex("players").where("players.team_id", "=", req.params.teamId)
     res.json(players);
-  } catch (err) {
+  } catch(err) {
     res.status(500).send(`Error retrieving players from the database: ${err}`);
   }
 };
@@ -35,15 +35,25 @@ const addPlayer = async (req, res) => {
     const newPlayerId = result[0];
     const createdPlayer = await knex("players").where({ id: newPlayerId });
     res.status(201).json(createdPlayer);
-  } catch (err) {
+  } catch(err) {
     res.status(500).json({
       message: `Unable to create new player due to: ${err}`,
     });
   }
 };
 
+const deletePlayer = async (req, res) => {
+    try {
+        const result = await knex("players").where({ id: req.params.playerId }).delete();
+        res.status(204).send("Player deleted");
+    } catch(err) {
+        res.status(500).json({message: `Unable to delete player due to: ${err}`})
+    }
+}
+
 module.exports = {
   getAllPlayers,
   getPlayersByTeam,
-  addPlayer
+  addPlayer, 
+  deletePlayer
 };
