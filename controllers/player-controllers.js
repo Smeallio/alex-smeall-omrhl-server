@@ -1,5 +1,3 @@
-const e = require("express");
-
 const knex = require("knex")(require("../knexfile"));
 
 const getAllPlayers = async (_req, res) => {
