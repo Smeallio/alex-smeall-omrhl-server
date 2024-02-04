@@ -13,6 +13,7 @@ exports.up = function (knex) {
       .onUpdate("CASCADE")
       .onDelete("CASCADE");
     table.string("position");
+    table.integer("number");
   });
 };
 
