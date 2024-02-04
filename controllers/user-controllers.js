@@ -2,6 +2,15 @@ const bcrypt = require('bcryptjs');
 const knex = require("knex")(require("../knexfile"));
 const jwt = require('jsonwebtoken');
 
+const getUser = async (_req, res) => {
+    try {
+        const users = await knex("users").select("*").from("users")
+        res.json(users);
+    } catch(err) {
+        res.status(500).send(`Error retieving users from the database: ${err}`)
+    }
+}
+
 
 const createUser = async (req, res) => {
     const { username, password } = req.body;
@@ -45,6 +54,7 @@ const userLogin = async (req, res) => {
 }
 
 module.exports = {
+    getUser,
     createUser,
     userLogin
 }
