@@ -6,7 +6,8 @@ const PORT = process.env.PORT || 5050;
 
 const userRoutes = require("./routes/user-routes");
 const teamRoutes = require("./routes/team-routes");
-const playerRoutes = require ("./routes/player-routes");
+const playerRoutes = require("./routes/player-routes");
+const gameRoutes = require ("./routes/game-routes");
 
 app.get("/", (req, res) => {
   res.send("Hello World!!!?");
@@ -18,6 +19,7 @@ app.use(express.json());
 app.use("/api/users", userRoutes);
 app.use("/api/teams", teamRoutes);
 app.use("/api/players", playerRoutes);
+app.use("/api/games", gameRoutes)
 
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
