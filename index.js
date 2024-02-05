@@ -9,15 +9,12 @@ const teamRoutes = require("./routes/team-routes");
 const playerRoutes = require("./routes/player-routes");
 const gameRoutes = require ("./routes/game-routes");
 
-app.get("/", (req, res) => {
-  res.send("Hello World!!!?");
-});
-
 app.use(cors());
+
 app.use(express.json());
 
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*'); // or specific origin
+app.use((_req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'https://oddmanrushhockey.netlify.app');
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   next();
@@ -26,7 +23,11 @@ app.use((req, res, next) => {
 app.use("/api/users", userRoutes);
 app.use("/api/teams", teamRoutes);
 app.use("/api/players", playerRoutes);
-app.use("/api/games", gameRoutes)
+app.use("/api/games", gameRoutes);
+
+app.get("/", (req, res) => {
+  res.send("Hello World!!!?");
+});
 
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
