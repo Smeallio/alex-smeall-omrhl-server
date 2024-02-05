@@ -16,6 +16,12 @@ app.get("/", (req, res) => {
 app.use(cors());
 app.use(express.json());
 
+const corsOptions = {
+  origin: "https://oddmanrushhockey.netlify.app/"
+};
+
+app.use(cors(corsOptions));
+
 app.use("/api/users", userRoutes);
 app.use("/api/teams", teamRoutes);
 app.use("/api/players", playerRoutes);
