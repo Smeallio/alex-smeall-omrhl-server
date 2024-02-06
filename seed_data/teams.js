@@ -1,14 +1,14 @@
 module.exports = [ 
     {
-        name: "Fogtown Leprechauns"
+        team_name: "Fogtown Leprechauns"
     },
     {
-        name: "Duck Island Saints"
+        team_name: "Duck Island Saints"
     },
     {
-        name: "Mighty Moose"
+        team_name: "Mighty Moose"
     },
     {
-        name: "Kraken Beers"
+        team_name: "Kraken Beers"
     }
 ]
