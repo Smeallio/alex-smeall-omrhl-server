@@ -3,7 +3,7 @@ const knex = require("knex")(require("../knexfile"));
 const getAllPlayers = async (_req, res) => {
   try {
     const players = await knex("players");
-    res.json(players);
+    res.status(200).json(players);
   } catch (err) {
     res.status(500).send(`Error retrieving players from the database: ${err}`);
   }
@@ -16,7 +16,7 @@ const getPlayersByTeam = async (req, res) => {
       "=",
       req.params.teamId
     );
-    res.json(players);
+    res.status(200).json(players);
   } catch (err) {
     res.status(500).send(`Error retrieving players from the database: ${err}`);
   }
