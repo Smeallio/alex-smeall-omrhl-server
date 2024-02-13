@@ -11,7 +11,7 @@ const getAllGames = async (_req, res) => {
 
 const getOneGame = async (req, res) => {
   try {
-    const game = await knex("games").where( { id: req.params.gameId }).first();
+    const game = await knex("games").where( { id: req.params.gameId }).first(); // Sync syntax for other controller
     if (!game) {
       return res.status(404).json({ error: "Game not found" });
     }
