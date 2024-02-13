@@ -7,5 +7,6 @@ router
   .route("/:gameId")
   .get(gameController.getOneGame)
   .put(gameController.updateGame)
+  .delete(gameController.deleteGame);
 
 module.exports = router;

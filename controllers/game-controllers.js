@@ -60,9 +60,21 @@ const updateGame = async (req, res) => {
   }
 };
 
+const deleteGame = async (req, res) => {
+  try {
+    const result = await knex("games")
+      .where({ id: req.params.gameId })
+      .delete();
+    res.status(204).send("Game deleted");
+  } catch (err) {
+    res.status(500).json({ message: `Unable to delete game due to: ${err}` });
+  }
+};
+
 module.exports = {
   getAllGames,
   getOneGame,
   addGame,
-  updateGame
+  updateGame, 
+  deleteGame
 };
