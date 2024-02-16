@@ -7,7 +7,8 @@ const PORT = process.env.PORT || 5050;
 const userRoutes = require("./routes/user-routes");
 const teamRoutes = require("./routes/team-routes");
 const playerRoutes = require("./routes/player-routes");
-const gameRoutes = require ("./routes/game-routes");
+const gameRoutes = require("./routes/game-routes");
+const statRoutes = require("./routes/stat-routes");
 
 app.use(cors());
 
@@ -24,6 +25,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/teams", teamRoutes);
 app.use("/api/players", playerRoutes);
 app.use("/api/games", gameRoutes);
+app.use("/api/stats", statRoutes);
 
 app.get("/", (req, res) => {
   res.send("Hello World!!!?");
