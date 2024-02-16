@@ -11,7 +11,7 @@ const getAllPlayers = async (_req, res) => {
 
 const getPlayersByTeam = async (req, res) => {
   try {
-    const players = await knex("players").where( { id: req.params.teamId } );
+    const players = await knex("players").where( { team_id: req.params.teamId } );
     res.status(200).json(players);
   } catch (err) {
     res.status(500).send(`Error retrieving players from the database: ${err}`);
