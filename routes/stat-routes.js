@@ -1,6 +1,10 @@
 const router = require("express").Router();
-const gameController = require("../controllers/stat-controllers");
+const statController = require("../controllers/stat-controllers");
 
-router.route("/").get(gameController.getAllSkaterStats)
+router.route("/skaters").get(statController.getAllSkaterStats)
+
+router
+  .route("/:gameId")
+  .get(statController.getSkaterStatsByGame)
 
 module.exports = router;

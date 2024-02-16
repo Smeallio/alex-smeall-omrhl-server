@@ -279,15 +279,6 @@ module.exports = [
     assists: 0,
   },
   {
-    id: 32,
-    game_id: 2,
-    player_name: "Trevor Greene",
-    player_id: 93,
-    team_id: 1,
-    goals: 0,
-    assists: 0,
-  },
-  {
     id: 33,
     game_id: 2,
     player_name: "Greg Thorne",
