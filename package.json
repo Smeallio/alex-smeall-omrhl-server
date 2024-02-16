@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "npx nodemon index.js",
+    "migrate:make": "knex migrate:make",
     "migrate": "knex migrate:latest",
     "migrate:down": "knex migrate:down",
     "migrate:rollback": "knex migrate:rollback",
