@@ -11,7 +11,7 @@ const getAllSkaterStats = async (_req, res) => {
 
 const getSkaterStatsByGame = async (req, res) => {
   try {
-    const skaterStatsByGame = await knex("skaterStats").where({ id: req.params.gameId }); // Sync syntax for other controller
+    const skaterStatsByGame = await knex("skaterStats").where({ game_id: req.params.gameId }); // Sync syntax for other controller
     if (!skaterStatsByGame) {
       return res.status(404).json({ error: "Game not found" });
     }
