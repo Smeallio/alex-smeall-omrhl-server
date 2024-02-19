@@ -12,5 +12,9 @@ router
   .get(gameController.getOneGame)
   .put(gameController.updateGame)
   .delete(gameController.deleteGame);
+  
+router
+  .route("/standings")
+  .get(gameController.getStandings)
 
 module.exports = router;
