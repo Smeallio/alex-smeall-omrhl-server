@@ -7,13 +7,7 @@ const getAllGames = async (_req, res) => {
     games.sort((a,b) => {
       const dateA = new Date(a.date + "T" + a.time);
       const dateB = new Date(b.date + "T" + b.time);
-
-      if (dateA < dateB) return -1;
-      if (dateA > dateB) return 1;
-
-      const timeA = parseInt(a.time.split(":")[0]);
-      const timeB = parseInt(b.time.split(":")[0]);
-      return timeA - timeB;
+      return dateA - dateB;
     })
 
     res.status(200).json(games);
