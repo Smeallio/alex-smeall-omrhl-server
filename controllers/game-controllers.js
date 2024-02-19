@@ -44,20 +44,22 @@ const getStandings = async (_req, res) => {
         knex.raw("SUM(CASE WHEN result = 'tie' THEN 1 ELSE 0 END) AS ties")
       )
       .from(function () {
-        this.select("team1_name AS team_name", "team1_result AS result")
-          .from("games")
-          .where("complete", 1)
-          .unionAll(() => {
-            this.select(
-              "team2_name AS team_name",
-              knex.raw(
-                "CASE WHEN team2_result = 'win' THEN 'loss' WHEN team2_result = 'loss' THEN 'win' ELSE 'tie' END AS result"
+        this.select("team_name", "result").from(function () {
+          this.select("team1_name AS team_name", "team1_result AS result")
+            .from("games")
+            .where("complete", 1)
+            .unionAll(() => {
+              this.select(
+                "team2_name AS team_name",
+                knex.raw(
+                  "CASE WHEN team2_result = 'win' THEN 'loss' WHEN team2_result = 'loss' THEN 'win' ELSE 'tie' END AS result"
+                )
               )
-            )
-              .from("games")
-              .where("complete", 1);
-          })
-          .as("results");
+                .from("games")
+                .where("complete", 1);
+            })
+            .as("subquery");
+        });
       })
       .groupBy("team_name");
 
