@@ -54,11 +54,7 @@ const getStandings = async (_req, res) => {
           .unionAll(function () {
             this.select("team_name", "result").from(function () {
               this.select(
-                "team2_name AS team_name",
-                knex.raw(
-                  "CASE WHEN team2_result = 'win' THEN 'loss' WHEN team2_result = 'loss' THEN 'win' ELSE 'tie' END AS result"
-                )
-              )
+                "team2_name AS team_name", "team2_result AS result")
                 .from("games")
                 .where("complete", 1)
                 .as("subquery2"); // Provide alias for the second subquery
