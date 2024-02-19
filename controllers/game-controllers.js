@@ -57,9 +57,8 @@ const getStandings = async (_req, res) => {
               )
                 .from("games")
                 .where("complete", 1);
-            })
-            .as("subquery");
-        });
+            });
+        }).as("subquery");
       })
       .groupBy("team_name");
 
