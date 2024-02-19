@@ -4,17 +4,17 @@ const getAllGames = async (_req, res) => {
   try {
     const games = await knex("games");
 
-    games.sort((a,b) => {
+    games.sort((a, b) => {
       const dateA = new Date(a.date);
       const dateB = new Date(b.date);
-      
+
       if (dateA < dateB) return -1;
       if (dateA > dateB) return 1;
 
       const timeA = parseInt(a.time.split(":")[0]);
       const timeB = parseInt(b.time.split(":")[0]);
       return timeA - timeB;
-    })
+    });
 
     res.status(200).json(games);
   } catch (err) {
@@ -24,13 +24,48 @@ const getAllGames = async (_req, res) => {
 
 const getOneGame = async (req, res) => {
   try {
-    const game = await knex("games").where( { id: req.params.gameId }).first(); // Sync syntax for other controller
+    const game = await knex("games").where({ id: req.params.gameId }).first(); // Sync syntax for other controller
     if (!game) {
       return res.status(404).json({ error: "Game not found" });
     }
     res.status(200).json(game);
   } catch (err) {
     res.status(500).send(`Error retrieving players from the database: ${err}`);
+  }
+};
+
+const getStandings = async (_req, res) => {
+  try {
+    const teamResults = await knex
+      .select(
+        "team_name",
+        knex.raw("SUM(CASE WHEN result = 'win' THEN 1 ELSE 0 END) AS wins"),
+        knex.raw("SUM(CASE WHEN result = 'loss' THEN 1 ELSE 0 END) AS losses"),
+        knex.raw("SUM(CASE WHEN result = 'tie' THEN 1 ELSE 0 END) AS ties")
+      )
+      .from(function () {
+        this.select("team1_name AS team_name", "team1_result AS result")
+          .from("games")
+          .where("complete", 1)
+          .unionAll(() => {
+            this.select(
+              "team2_name AS team_name",
+              knex.raw(
+                "CASE WHEN team2_result = 'win' THEN 'loss' WHEN team2_result = 'loss' THEN 'win' ELSE 'tie' END AS result"
+              )
+            )
+              .from("games")
+              .where("complete", 1);
+          })
+          .as("results");
+      })
+      .groupBy("team_name");
+
+    res.status(200).json(teamResults);
+  } catch (err) {
+    res
+      .status(500)
+      .send(`Error retrieving standings from the database: ${err}`);
   }
 };
 
@@ -87,7 +122,8 @@ const deleteGame = async (req, res) => {
 module.exports = {
   getAllGames,
   getOneGame,
+  getStandings,
   addGame,
-  updateGame, 
-  deleteGame
+  updateGame,
+  deleteGame,
 };
