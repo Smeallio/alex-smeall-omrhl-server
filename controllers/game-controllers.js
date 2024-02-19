@@ -5,8 +5,8 @@ const getAllGames = async (_req, res) => {
     const games = await knex("games");
 
     games.sort((a,b) => {
-      const dateA = new Date(a.date + " " + a.time);
-      const dateB = new Date(b.date + " " + b.time);
+      const dateA = new Date(a.date + "T" + a.time);
+      const dateB = new Date(b.date + "T" + b.time);
 
       if (dateA < dateB) return -1;
       if (dateA > dateB) return 1;
