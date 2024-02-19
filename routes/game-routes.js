@@ -4,7 +4,6 @@ const gameController = require("../controllers/game-controllers");
 router
   .route("/")
   .get(gameController.getAllGames)
-  .get(gameController.getStandings)
   .post(gameController.addGame);
 
 router
@@ -12,7 +11,7 @@ router
   .get(gameController.getOneGame)
   .put(gameController.updateGame)
   .delete(gameController.deleteGame);
-  
+
 router
   .route("/standings")
   .get(gameController.getStandings)
