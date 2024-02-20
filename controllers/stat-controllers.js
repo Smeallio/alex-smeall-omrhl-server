@@ -26,14 +26,11 @@ const getSkaterStatsByGame = async (req, res) => {
 };
 
 const addSkaterStats = async (req, res) => {
-  const gameId = req.params.game_id;
-  if (!req.body.player_id || !req.body.team_id) {
+  if (!req.body.game_id || !req.body.player_id || !req.body.team_id) {
     return res.status(400).json({
       message: "Invalid game id, player id or team id",
     });
   }
-
-  req.body.game_id = gameId;
 
   try {
     const result = await knex("skaterStats").insert(req.body);
