@@ -26,11 +26,15 @@ const getSkaterStatsByGame = async (req, res) => {
 };
 
 const addSkaterStats = async (req, res) => {
-  if (!req.body.game_id || !req.body.player_id || !req.body.team_id) {
+  const gameId = req.params.game_id;
+  if (!gameId || !req.body.player_id || !req.body.team_id) {
     return res.status(400).json({
-      message: "Invalid game - game id, player id or team id",
+      message: "Invalid game id, player id or team id",
     });
   }
+
+  req.body.game_id = gameId;
+
   try {
     const result = await knex("skaterStats").insert(req.body);
     res.status(201).json(result);
@@ -48,7 +52,9 @@ const updateSkaterStat = async (req, res) => {
     });
   }
   try {
-    await knex("skaterStats").where({ id: req.params.skaterStatId }).update(req.body);
+    await knex("skaterStats")
+      .where({ id: req.params.skaterStatId })
+      .update(req.body);
     const updatedSkaterStat = await knex("skaterStats").where({
       id: req.params.skaterStatId,
     });
@@ -68,20 +74,20 @@ const updateSkaterStat = async (req, res) => {
 };
 
 const deleteSkaterStat = async (req, res) => {
-    try {
-      const result = await knex("skaterStats")
-        .where({ id: req.params.skaterStatId })
-        .delete();
-      res.status(204).send("Stat deleted: ", result);
-    } catch (err) {
-      res.status(500).json({ message: `Unable to delete stat due to: ${err}` });
-    }
-  };
+  try {
+    const result = await knex("skaterStats")
+      .where({ id: req.params.skaterStatId })
+      .delete();
+    res.status(204).send("Stat deleted: ", result);
+  } catch (err) {
+    res.status(500).json({ message: `Unable to delete stat due to: ${err}` });
+  }
+};
 
 module.exports = {
   getAllSkaterStats,
   getSkaterStatsByGame,
   addSkaterStats,
   updateSkaterStat,
-  deleteSkaterStat
+  deleteSkaterStat,
 };
