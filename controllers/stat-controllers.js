@@ -27,7 +27,7 @@ const getSkaterStatsByGame = async (req, res) => {
 
 const addSkaterStats = async (req, res) => {
   const gameId = req.params.game_id;
-  if (!gameId || !req.body.player_id || !req.body.team_id) {
+  if (!req.body.player_id || !req.body.team_id) {
     return res.status(400).json({
       message: "Invalid game id, player id or team id",
     });
