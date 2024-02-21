@@ -85,7 +85,7 @@ const deleteSkaterStat = async (req, res) => {
     const result = await knex("skaterStats")
       .where({ id: req.params.skaterStatId })
       .delete();
-    res.status(204).send("Stat deleted: ", result);
+    res.status(204).send("Stat deleted")
   } catch (err) {
     res.status(500).json({ message: `Unable to delete stat due to: ${err}` });
   }
