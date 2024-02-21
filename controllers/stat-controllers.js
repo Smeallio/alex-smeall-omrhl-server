@@ -11,9 +11,12 @@ const getAllSkaterStats = async (_req, res) => {
 
 const getSkaterStatsByGame = async (req, res) => {
   try {
-    const skaterStatsByGame = await knex("skaterStats").where({
+    const skaterStatsByGame = await knex("skaterStats")
+    .select("skaterStats.*", "players.name as player_name")
+    .leftJoin("players", "skaterStats.player_id", "players.id")
+    .where({
       game_id: req.params.gameId,
-    }); // Sync syntax for other controller
+    }); 
     if (!skaterStatsByGame) {
       return res.status(404).json({ error: "Game not found" });
     }
@@ -26,7 +29,7 @@ const getSkaterStatsByGame = async (req, res) => {
 };
 
 const addSkaterStats = async (req, res) => {
-    const game_id = req.params.gameId;
+  const game_id = req.params.gameId;
   if (!req.body.player_id || !req.body.team_id) {
     return res.status(400).json({
       message: "Invalid game id, player id or team id",
@@ -46,7 +49,7 @@ const addSkaterStats = async (req, res) => {
 };
 
 const updateSkaterStat = async (req, res) => {
-    const game_id = req.params.gameId;
+  const game_id = req.params.gameId;
   if (!req.body.player_id || !req.body.team_id) {
     return res.status(400).json({
       message: "Invalid game - game id, player id or team id",
