@@ -27,10 +27,6 @@ app.use("/api/players", playerRoutes);
 app.use("/api/games", gameRoutes);
 app.use("/api/stats", statRoutes);
 
-app.get("/", (req, res) => {
-  res.send("Hello World!!!?");
-});
-
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });

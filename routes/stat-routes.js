@@ -8,11 +8,21 @@ router.route("/goalies").get(statController.getAllGoalieStats);
 router
   .route("/skaters/:gameId")
   .get(statController.getSkaterStatsByGame)
-  .post(statController.addSkaterStats);
+  .post(statController.addSkaterStat);
+
+router
+  .route("/goalies/:gameId")
+  .get(statController.getGoalieStatsByGame)
+  .post(statController.addGoalieStat);
 
 router
   .route("/skaters/:skaterStatId")
   .put(statController.updateSkaterStat)
   .delete(statController.deleteSkaterStat);
+
+  router
+  .route("/goalies/:skaterStatId")
+  .put(statController.updateGoalieStat)
+  .delete(statController.deleteGoalieStat);
 
 module.exports = router;
