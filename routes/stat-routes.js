@@ -3,6 +3,8 @@ const statController = require("../controllers/stat-controllers");
 
 router.route("/skaters").get(statController.getAllSkaterStats);
 
+router.route("/goalies").get(statController.getAllGoalieStats);
+
 router
   .route("/skaters/:gameId")
   .get(statController.getSkaterStatsByGame)

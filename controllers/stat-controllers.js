@@ -2,12 +2,25 @@ const knex = require("knex")(require("../knexfile"));
 
 const getAllSkaterStats = async (_req, res) => {
   try {
-    const skaterStats = await knex("skaterStats");
+    const skaterStats = await knex("skaterStats")
+    .select("skaterStats.*", "players.name as player_name")
+    .leftJoin("players", "skaterStats.player_id", "players.id");
     res.status(200).json(skaterStats);
   } catch (err) {
     res.status(500).send(`Error retrieving stats from the database: ${err}`);
   }
 };
+
+const getAllGoalieStats = async (_req, res) => {
+    try {
+      const goalieStats = await knex("goalieStats")
+      .select("goalieStats.*", "players.name as player_name")
+      .leftJoin("players", "goalieStats.player_id", "players.id")
+      res.status(200).json(goalieStats);
+    } catch (err) {
+      res.status(500).send(`Error retrieving stats from the database: ${err}`);
+    }
+  };
 
 const getSkaterStatsByGame = async (req, res) => {
   try {
@@ -93,6 +106,7 @@ const deleteSkaterStat = async (req, res) => {
 
 module.exports = {
   getAllSkaterStats,
+  getAllGoalieStats,
   getSkaterStatsByGame,
   addSkaterStats,
   updateSkaterStat,
