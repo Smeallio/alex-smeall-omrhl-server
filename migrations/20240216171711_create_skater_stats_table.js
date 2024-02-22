@@ -12,7 +12,6 @@ exports.up = function (knex) {
       .references("games.id")
       .onUpdate("CASCADE")
       .onDelete("CASCADE");
-    table.string("player_name").notNullable();
     table
       .integer("player_id")
       .notNullable()
