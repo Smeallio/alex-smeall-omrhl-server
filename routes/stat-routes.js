@@ -21,7 +21,7 @@ router
   .delete(statController.deleteSkaterStat);
 
   router
-  .route("/goalies/:skaterStatId")
+  .route("/goalies/:goalieStatId")
   .put(statController.updateGoalieStat)
   .delete(statController.deleteGoalieStat);
 
