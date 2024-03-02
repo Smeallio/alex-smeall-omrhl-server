@@ -44,7 +44,7 @@ const getSkaterStatsByGame = async (req, res) => {
 const getGoalieStatsByGame = async (req, res) => {
   try {
     const goalieStatsByGame = await knex("goalieStats")
-      .select("golaieStats.*", "players.name as player_name")
+      .select("goalieStats.*", "players.name as player_name")
       .leftJoin("players", "goalieStats.player_id", "players.id")
       .where({
         game_id: req.params.gameId,
