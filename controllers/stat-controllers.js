@@ -85,7 +85,7 @@ const getSummarizedSkaterStats = async (_req, res) => {
   }
 };
 
-const getSummarizedSkaterStatsByTeam = async (_req, res) => {
+const getSummarizedSkaterStatsByTeam = async (req, res) => {
   try {
     const summedSkaterStats = await knex("skaterStats")
       .select(
