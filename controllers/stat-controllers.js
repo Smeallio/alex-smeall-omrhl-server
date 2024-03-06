@@ -79,7 +79,7 @@ const getSummarizedSkaterStats = async (_req, res) => {
     //   .orderBy("total_goals", "desc");
     // console.log(summedSkaterStats.toString());
 
-    res.status(200).send("Hello!");
+    res.status(999).send("Hello!");
   } catch (err) {
     res.status(500).send(`Error retrieving stats from the database: ${err}`);
   }
