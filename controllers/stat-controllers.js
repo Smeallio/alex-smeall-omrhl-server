@@ -70,14 +70,16 @@ const getSummarizedSkaterStats = async (_req, res) => {
         knex.raw("COUNT(skaterStats.player_id) AS games_played"),
         knex.raw("SUM(skaterStats.goals) AS total_goals"),
         knex.raw("SUM(skaterStats.assists) AS total_assists"),
-        knex.raw("SUM(skaterStats.goals) + SUM(skaterStats.assists) AS total_points")
+        knex.raw(
+          "SUM(skaterStats.goals) + SUM(skaterStats.assists) AS total_points"
+        )
       )
       .leftJoin("players", "skaterStats.player_id", "players.id")
       .groupBy("skaterStats.player_id")
       .orderBy("total_goals", "desc");
-        console.log(summedSkaterStats.toString());
+    console.log(summedSkaterStats.toString());
 
-    res.status(200).json(summedSkaterStats);
+    res.status(200).send("Hello!");
   } catch (err) {
     res.status(500).send(`Error retrieving stats from the database: ${err}`);
   }
