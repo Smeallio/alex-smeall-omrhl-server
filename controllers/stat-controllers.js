@@ -62,22 +62,22 @@ const getGoalieStatsByGame = async (req, res) => {
 
 const getSummarizedSkaterStats = async (_req, res) => {
   try {
-    const summedSkaterStats = await knex("skaterStats")
-      .select(
-        "players.name as player_name",
-        "players.position as player_position",
-        "players.number as player_number",
-        knex.raw("COUNT(skaterStats.player_id) AS games_played"),
-        knex.raw("SUM(skaterStats.goals) AS total_goals"),
-        knex.raw("SUM(skaterStats.assists) AS total_assists"),
-        knex.raw(
-          "SUM(skaterStats.goals) + SUM(skaterStats.assists) AS total_points"
-        )
-      )
-      .leftJoin("players", "skaterStats.player_id", "players.id")
-      .groupBy("skaterStats.player_id")
-      .orderBy("total_goals", "desc");
-    console.log(summedSkaterStats.toString());
+    // const summedSkaterStats = await knex("skaterStats")
+    //   .select(
+    //     "players.name as player_name",
+    //     "players.position as player_position",
+    //     "players.number as player_number",
+    //     knex.raw("COUNT(skaterStats.player_id) AS games_played"),
+    //     knex.raw("SUM(skaterStats.goals) AS total_goals"),
+    //     knex.raw("SUM(skaterStats.assists) AS total_assists"),
+    //     knex.raw(
+    //       "SUM(skaterStats.goals) + SUM(skaterStats.assists) AS total_points"
+    //     )
+    //   )
+    //   .leftJoin("players", "skaterStats.player_id", "players.id")
+    //   .groupBy("skaterStats.player_id")
+    //   .orderBy("total_goals", "desc");
+    // console.log(summedSkaterStats.toString());
 
     res.status(200).send("Hello!");
   } catch (err) {
