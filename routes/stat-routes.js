@@ -7,6 +7,8 @@ router.route("/goalies").get(statController.getAllGoalieStats);
 
 router.route("/skaters/summary").get(statController.getSummarizedSkaterStats);
 
+router.route("/skaters/summary/:teamId").get(statController.getSummarizedSkaterStatsByTeam);
+
 router
   .route("/skaters/:gameId")
   .get(statController.getSkaterStatsByGame)
