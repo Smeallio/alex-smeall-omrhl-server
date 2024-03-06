@@ -5,6 +5,8 @@ router.route("/skaters").get(statController.getAllSkaterStats);
 
 router.route("/goalies").get(statController.getAllGoalieStats);
 
+router.route("/skaters/summary").get(statController.getSummarizedSkaterStats);
+
 router
   .route("/skaters/:gameId")
   .get(statController.getSkaterStatsByGame)
@@ -24,7 +26,5 @@ router
   .route("/goalies/:goalieStatId")
   .put(statController.updateGoalieStat)
   .delete(statController.deleteGoalieStat);
-
-router.route("/skaters/summary").get(statController.getSummarizedSkaterStats);
 
 module.exports = router;
