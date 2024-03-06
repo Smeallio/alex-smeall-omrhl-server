@@ -60,6 +60,27 @@ const getGoalieStatsByGame = async (req, res) => {
   }
 };
 
+const getSummarizedSkaterStats = async (_req, res) => {
+  try {
+    const summedSkaterStats = await knex("skaterStats")
+      .select(
+        "players.name as player_name",
+        "players.position as player_position",
+        "players.number as player_number",
+        knex.raw("COUNT(skaterStats.player_id) AS games_played"),
+        knex.raw("SUM(skaterStats.goals) AS total_goals"),
+        knex.raw("SUM(skaterStats.assists) AS total_assists"),
+        knex.raw("SUM(skaterStats.goals) + SUM(skaterStats.assists) AS total_points")
+      )
+      .leftJoin("players", "skaterStats.player_id", "players.id")
+      .groupBy("skaterStats.player_id")
+      .orderBy("total_points", "desc");
+    res.status(200).json(summedSkaterStats);
+  } catch (err) {
+    res.status(500).send(`Error retrieving stats from the database: ${err}`);
+  }
+};
+
 const addSkaterStat = async (req, res) => {
   const game_id = req.params.gameId;
   if (!req.body.player_id || !req.body.team_id) {
@@ -81,24 +102,24 @@ const addSkaterStat = async (req, res) => {
 };
 
 const addGoalieStat = async (req, res) => {
-    const game_id = req.params.gameId;
-    if (!req.body.player_id || !req.body.team_id) {
-      return res.status(400).json({
-        message: "Invalid game id, player id or team id",
-      });
-    }
-  
-    req.body.game_id = game_id;
-  
-    try {
-      const result = await knex("goalieStats").insert(req.body);
-      res.status(201).json(result);
-    } catch (err) {
-      res.status(500).json({
-        message: `Unable to add stats due to: ${err}`,
-      });
-    }
-  };
+  const game_id = req.params.gameId;
+  if (!req.body.player_id || !req.body.team_id) {
+    return res.status(400).json({
+      message: "Invalid game id, player id or team id",
+    });
+  }
+
+  req.body.game_id = game_id;
+
+  try {
+    const result = await knex("goalieStats").insert(req.body);
+    res.status(201).json(result);
+  } catch (err) {
+    res.status(500).json({
+      message: `Unable to add stats due to: ${err}`,
+    });
+  }
+};
 
 const updateSkaterStat = async (req, res) => {
   const game_id = req.params.gameId;
@@ -133,36 +154,36 @@ const updateSkaterStat = async (req, res) => {
 };
 
 const updateGoalieStat = async (req, res) => {
-    const game_id = req.params.gameId;
-    if (!req.body.player_id || !req.body.team_id) {
-      return res.status(400).json({
-        message: "Invalid game - game id, player id or team id",
+  const game_id = req.params.gameId;
+  if (!req.body.player_id || !req.body.team_id) {
+    return res.status(400).json({
+      message: "Invalid game - game id, player id or team id",
+    });
+  }
+
+  req.body.game_id = game_id;
+
+  try {
+    await knex("goalieStats")
+      .where({ id: req.params.goalieStatId })
+      .update(req.body);
+    const updatedGoalieStat = await knex("goalieStats").where({
+      id: req.params.goalieStatId,
+    });
+
+    if (updatedGoalieStat.length > 0) {
+      res.status(201).json(updatedGoalieStat);
+    } else {
+      res.status(404).json({
+        message: `Stat not found`,
       });
     }
-  
-    req.body.game_id = game_id;
-  
-    try {
-      await knex("goalieStats")
-        .where({ id: req.params.goalieStatId })
-        .update(req.body);
-      const updatedGoalieStat = await knex("goalieStats").where({
-        id: req.params.goalieStatId,
-      });
-  
-      if (updatedGoalieStat.length > 0) {
-        res.status(201).json(updatedGoalieStat);
-      } else {
-        res.status(404).json({
-          message: `Stat not found`,
-        });
-      }
-    } catch (err) {
-      res.status(500).json({
-        message: `Unable to update stat due to: ${err}`,
-      });
-    }
-  };
+  } catch (err) {
+    res.status(500).json({
+      message: `Unable to update stat due to: ${err}`,
+    });
+  }
+};
 
 const deleteSkaterStat = async (req, res) => {
   try {
@@ -176,25 +197,26 @@ const deleteSkaterStat = async (req, res) => {
 };
 
 const deleteGoalieStat = async (req, res) => {
-    try {
-      const result = await knex("goalieStats")
-        .where({ id: req.params.goalieStatId })
-        .delete();
-      res.status(204).json({ message: `Stat deleted: ${result}` });
-    } catch (err) {
-      res.status(500).json({ message: `Unable to delete stat due to: ${err}` });
-    }
-  };
+  try {
+    const result = await knex("goalieStats")
+      .where({ id: req.params.goalieStatId })
+      .delete();
+    res.status(204).json({ message: `Stat deleted: ${result}` });
+  } catch (err) {
+    res.status(500).json({ message: `Unable to delete stat due to: ${err}` });
+  }
+};
 
 module.exports = {
   getAllSkaterStats,
   getAllGoalieStats,
   getSkaterStatsByGame,
   getGoalieStatsByGame,
+  getSummarizedSkaterStats,
   addSkaterStat,
   addGoalieStat,
   updateSkaterStat,
   updateGoalieStat,
   deleteSkaterStat,
-  deleteGoalieStat
+  deleteGoalieStat,
 };

@@ -20,9 +20,11 @@ router
   .put(statController.updateSkaterStat)
   .delete(statController.deleteSkaterStat);
 
-  router
+router
   .route("/goalies/:goalieStatId")
   .put(statController.updateGoalieStat)
   .delete(statController.deleteGoalieStat);
+
+router.route("/skaters/summary").get(statController.getSummarizedSkaterStats);
 
 module.exports = router;
