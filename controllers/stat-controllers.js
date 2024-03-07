@@ -101,7 +101,7 @@ const getSummarizedSkaterStatsByTeam = async (req, res) => {
       )
       .leftJoin("players", "skaterStats.player_id", "players.id")
       .where({
-        team_id: req.params.teamId,
+        'players.team_id': req.params.teamId,
       })
       .groupBy("skaterStats.player_id")
       .orderBy("total_goals", "desc");
