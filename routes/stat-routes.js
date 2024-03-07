@@ -7,7 +7,11 @@ router.route("/goalies").get(statController.getAllGoalieStats);
 
 router.route("/skaters/summary").get(statController.getSummarizedSkaterStats);
 
+router.route("goalies/summary").get(statController.getSummarizedGoalieStats);
+
 router.route("/skaters/summary/:teamId").get(statController.getSummarizedSkaterStatsByTeam);
+
+router.route("/goalies/summary/:teamId").get(statController.getSummarizedGoalieStatsByTeam);
 
 router
   .route("/skaters/:gameId")

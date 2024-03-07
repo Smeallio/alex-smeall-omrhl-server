@@ -78,9 +78,28 @@ const getSummarizedSkaterStats = async (_req, res) => {
       .leftJoin("players", "skaterStats.player_id", "players.id")
       .groupBy("skaterStats.player_id")
       .orderBy("total_points", "desc");
-    console.log(summedSkaterStats.toString());
-
     res.status(200).json(summedSkaterStats);
+  } catch (err) {
+    res.status(500).send(`Error retrieving stats from the database: ${err}`);
+  }
+};
+
+const getSummarizedGoalieStats = async (_req, res) => {
+  try {
+    const summedGoalieStats = await knex("goalieStats")
+      .select(
+        "players.id as player_id",
+        "players.name as player_name",
+        "players.position as player_position",
+        "players.number as player_number",
+        knex.raw("COUNT(goalieStats.player_id) AS games_played"),
+        knex.raw("SUM(goalieStats.wins) AS total_wins"),
+        knex.raw("SUM(goalieStats.goalsAgainst) AS total_goalsAgainst")
+      )
+      .leftJoin("players", "goalieStats.player_id", "players.id")
+      .groupBy("goalieStats.player_id")
+      .orderBy("total_wins", "desc");
+    res.status(200).json(summedGoalieStats);
   } catch (err) {
     res.status(500).send(`Error retrieving stats from the database: ${err}`);
   }
@@ -107,9 +126,31 @@ const getSummarizedSkaterStatsByTeam = async (req, res) => {
       })
       .groupBy("skaterStats.player_id")
       .orderBy("total_points", "desc");
-    console.log(summedSkaterStats.toString());
-
     res.status(200).json(summedSkaterStats);
+  } catch (err) {
+    res.status(500).send(`Error retrieving stats from the database: ${err}`);
+  }
+};
+
+const getSummarizedGoalieStatsByTeam = async (req, res) => {
+  try {
+    const summedGoalieStats = await knex("goalieStats")
+      .select(
+        "players.id as player_id",
+        "players.name as player_name",
+        "players.position as player_position",
+        "players.number as player_number",
+        knex.raw("COUNT(goalieStats.player_id) AS games_played"),
+        knex.raw("SUM(goalieStats.wins) AS total_wins"),
+        knex.raw("SUM(goalieStats.goalsAgainst) AS total_goalsAgainst"),
+      )
+      .leftJoin("players", "goalieStats.player_id", "players.id")
+      .where({
+        'players.team_id': req.params.teamId,
+      })
+      .groupBy("goalieStats.player_id")
+      .orderBy("total_wins", "desc");
+    res.status(200).json(summedGoalieStats);
   } catch (err) {
     res.status(500).send(`Error retrieving stats from the database: ${err}`);
   }
@@ -247,7 +288,9 @@ module.exports = {
   getSkaterStatsByGame,
   getGoalieStatsByGame,
   getSummarizedSkaterStats,
+  getSummarizedGoalieStats,
   getSummarizedSkaterStatsByTeam,
+  getSummarizedGoalieStatsByTeam,
   addSkaterStat,
   addGoalieStat,
   updateSkaterStat,
