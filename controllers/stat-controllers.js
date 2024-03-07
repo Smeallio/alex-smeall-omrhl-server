@@ -64,6 +64,7 @@ const getSummarizedSkaterStats = async (_req, res) => {
   try {
     const summedSkaterStats = await knex("skaterStats")
       .select(
+        "players.id as player_id",
         "players.name as player_name",
         "players.position as player_position",
         "players.number as player_number",
@@ -76,7 +77,7 @@ const getSummarizedSkaterStats = async (_req, res) => {
       )
       .leftJoin("players", "skaterStats.player_id", "players.id")
       .groupBy("skaterStats.player_id")
-      .orderBy("total_goals", "desc");
+      .orderBy("total_points", "desc");
     console.log(summedSkaterStats.toString());
 
     res.status(200).json(summedSkaterStats);
@@ -89,6 +90,7 @@ const getSummarizedSkaterStatsByTeam = async (req, res) => {
   try {
     const summedSkaterStats = await knex("skaterStats")
       .select(
+        "players.id as player_id",
         "players.name as player_name",
         "players.position as player_position",
         "players.number as player_number",
@@ -104,7 +106,7 @@ const getSummarizedSkaterStatsByTeam = async (req, res) => {
         'players.team_id': req.params.teamId,
       })
       .groupBy("skaterStats.player_id")
-      .orderBy("total_goals", "desc");
+      .orderBy("total_points", "desc");
     console.log(summedSkaterStats.toString());
 
     res.status(200).json(summedSkaterStats);
