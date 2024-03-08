@@ -25,7 +25,12 @@ const getAllGoalieStats = async (_req, res) => {
 const getSkaterStatsByGame = async (req, res) => {
   try {
     const skaterStatsByGame = await knex("skaterStats")
-      .select("skaterStats.*", "players.name as player_name")
+      .select(
+        "skaterStats.*",
+        "players.name as player_name",
+        "players.position as player_position",
+        "players.number as player_number"
+      )
       .leftJoin("players", "skaterStats.player_id", "players.id")
       .where({
         game_id: req.params.gameId,
@@ -44,7 +49,12 @@ const getSkaterStatsByGame = async (req, res) => {
 const getGoalieStatsByGame = async (req, res) => {
   try {
     const goalieStatsByGame = await knex("goalieStats")
-      .select("goalieStats.*", "players.name as player_name")
+      .select(
+        "goalieStats.*",
+        "players.name as player_name",
+        "players.position as player_position",
+        "players.number as player_number"
+      )
       .leftJoin("players", "goalieStats.player_id", "players.id")
       .where({
         game_id: req.params.gameId,
@@ -122,7 +132,7 @@ const getSummarizedSkaterStatsByTeam = async (req, res) => {
       )
       .leftJoin("players", "skaterStats.player_id", "players.id")
       .where({
-        'players.team_id': req.params.teamId,
+        "players.team_id": req.params.teamId,
       })
       .groupBy("skaterStats.player_id")
       .orderBy("total_points", "desc");
@@ -142,11 +152,11 @@ const getSummarizedGoalieStatsByTeam = async (req, res) => {
         "players.number as player_number",
         knex.raw("COUNT(goalieStats.player_id) AS games_played"),
         knex.raw("SUM(goalieStats.wins) AS total_wins"),
-        knex.raw("SUM(goalieStats.goalsAgainst) AS total_goalsAgainst"),
+        knex.raw("SUM(goalieStats.goalsAgainst) AS total_goalsAgainst")
       )
       .leftJoin("players", "goalieStats.player_id", "players.id")
       .where({
-        'players.team_id': req.params.teamId,
+        "players.team_id": req.params.teamId,
       })
       .groupBy("goalieStats.player_id")
       .orderBy("total_wins", "desc");
