@@ -1,6 +1,6 @@
-const goalieStats = require("../seed_data/goalieStats");
+const announcements = require("../seed_data/announcements");
 
 exports.seed = async function (knex) {
-    await knex("goalieStats").del();
-    await knex("goalieStats").insert(goalieStats);
+    await knex("announcements").del();
+    await knex("announcements").insert(announcements);
 }
