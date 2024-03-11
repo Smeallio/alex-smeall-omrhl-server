@@ -7,7 +7,7 @@ router
   .post(annoucementController.addAnnouncement);
 
 router
-  .route("/announcementId")
+  .route("/:announcementId")
   .put(annoucementController.updateAnnouncement)
   .delete(annoucementController.deleteAnnouncement);
 

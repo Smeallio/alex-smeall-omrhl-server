@@ -56,7 +56,7 @@ const deleteAnnouncement = async (req, res) => {
     const result = await knex("announcements")
       .where({ id: req.params.announcementId })
       .delete();
-    res.status(204).send("Announcement deleted");
+      res.status(204).json({ message: `Announcement deleted: ${result}` })
   } catch (err) {
     res.status(500).json({ message: `Unable to delete announcement due to: ${err}` });
   }
