@@ -5,7 +5,7 @@ const getAllAnnouncements = async (_req, res) => {
     const announcements = await knex("announcements");
     res.status(200).json(announcements);
   } catch (err) {
-    res.status(500).send(`Error retrieving players from the database: ${err}`);
+    res.status(500).send(`Error retrieving announcements from the database: ${err}`);
   }
 };
 
@@ -37,7 +37,7 @@ const updateAnnouncement = async (req, res) => {
       id: req.params.announcementId,
     });
 
-    if (updatedPlayer.length > 0) {
+    if (updatedAnnouncement.length > 0) {
       res.status(201).json(updatedAnnouncement);
     } else {
       res.status(404).json({
