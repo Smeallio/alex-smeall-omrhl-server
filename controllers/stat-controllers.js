@@ -107,7 +107,7 @@ const getSummarizedGoalieStats = async (_req, res) => {
         knex.raw("COUNT(goalieStats.player_id) AS games_played"),
         knex.raw("SUM(goalieStats.wins) AS total_wins"),
         knex.raw("SUM(goalieStats.goalsAgainst) AS total_goalsAgainst"),
-        knex.raw("SUM(goalieStats.goalsAgainst) / COUNT(goalieStats.player_id) AS goalsAgainst_average")
+        knex.raw("ROUND(SUM(goalieStats.goalsAgainst) / COUNT(goalieStats.player_id), 2) AS goalsAgainst_average")
       )
       .leftJoin("players", "goalieStats.player_id", "players.id")
       .groupBy("goalieStats.player_id")
