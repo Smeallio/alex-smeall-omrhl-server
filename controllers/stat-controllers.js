@@ -78,6 +78,7 @@ const getSummarizedSkaterStats = async (_req, res) => {
         "players.name as player_name",
         "players.position as player_position",
         "players.number as player_number",
+        "players.team_id as player_teamId",
         knex.raw("COUNT(skaterStats.player_id) AS games_played"),
         knex.raw("SUM(skaterStats.goals) AS total_goals"),
         knex.raw("SUM(skaterStats.assists) AS total_assists"),
@@ -102,6 +103,7 @@ const getSummarizedGoalieStats = async (_req, res) => {
         "players.name as player_name",
         "players.position as player_position",
         "players.number as player_number",
+        "players.team_id as player_teamId",
         knex.raw("COUNT(goalieStats.player_id) AS games_played"),
         knex.raw("SUM(goalieStats.wins) AS total_wins"),
         knex.raw("SUM(goalieStats.goalsAgainst) AS total_goalsAgainst")
