@@ -22,6 +22,52 @@ const getAllGames = async (_req, res) => {
   }
 };
 
+const getRegSeasonGames = async (_req, res) => {
+  try {
+    const games = await knex("games")
+    .where("game_type", "Regular Season");
+
+    games.sort((a, b) => {
+      const dateA = new Date(a.date);
+      const dateB = new Date(b.date);
+
+      if (dateA < dateB) return -1;
+      if (dateA > dateB) return 1;
+
+      const timeA = parseInt(a.time.split(":")[0]);
+      const timeB = parseInt(b.time.split(":")[0]);
+      return timeA - timeB;
+    });
+
+    res.status(200).json(games);
+  } catch (err) {
+    res.status(500).send(`Error retrieving games from the database: ${err}`);
+  }
+};
+
+const getPlayoffGames = async (_req, res) => {
+  try {
+    const games = await knex("games")
+    .where("game_type", "Playoffs");
+
+    games.sort((a, b) => {
+      const dateA = new Date(a.date);
+      const dateB = new Date(b.date);
+
+      if (dateA < dateB) return -1;
+      if (dateA > dateB) return 1;
+
+      const timeA = parseInt(a.time.split(":")[0]);
+      const timeB = parseInt(b.time.split(":")[0]);
+      return timeA - timeB;
+    });
+
+    res.status(200).json(games);
+  } catch (err) {
+    res.status(500).send(`Error retrieving games from the database: ${err}`);
+  }
+};
+
 const getOneGame = async (req, res) => {
   try {
     const game = await knex("games").where({ id: req.params.gameId }).first(); // Sync syntax for other controller
@@ -43,7 +89,9 @@ const getStandings = async (_req, res) => {
         knex.raw("SUM(CASE WHEN result = 'win' THEN 1 ELSE 0 END) AS wins"),
         knex.raw("SUM(CASE WHEN result = 'loss' THEN 1 ELSE 0 END) AS losses"),
         knex.raw("SUM(CASE WHEN result = 'tie' THEN 1 ELSE 0 END) AS ties"),
-        knex.raw("SUM(CASE WHEN result = 'win' THEN 2 WHEN result = 'tie' THEN 1 ELSE 0 END) AS points")
+        knex.raw(
+          "SUM(CASE WHEN result = 'win' THEN 2 WHEN result = 'tie' THEN 1 ELSE 0 END) AS points"
+        )
       )
       .from(function () {
         this.select("team_name", "result")
@@ -51,14 +99,15 @@ const getStandings = async (_req, res) => {
             this.select("team1_name AS team_name", "team1_result AS result")
               .from("games")
               .where("complete", 1)
+              .andWhere("game_type", "Regular Season")
               .as("subquery1");
           })
           .unionAll(function () {
             this.select("team_name", "result").from(function () {
-              this.select(
-                "team2_name AS team_name", "team2_result AS result")
+              this.select("team2_name AS team_name", "team2_result AS result")
                 .from("games")
                 .where("complete", 1)
+                .andWhere("game_type", "Regular Season")
                 .as("subquery2");
             });
           })
@@ -118,7 +167,7 @@ const deleteGame = async (req, res) => {
     const result = await knex("games")
       .where({ id: req.params.gameId })
       .delete();
-    res.status(204).json({ message: `Game deleted: ${result}` })
+    res.status(204).json({ message: `Game deleted: ${result}` });
   } catch (err) {
     res.status(500).json({ message: `Unable to delete game due to: ${err}` });
   }
@@ -126,6 +175,8 @@ const deleteGame = async (req, res) => {
 
 module.exports = {
   getAllGames,
+  getRegSeasonGames,
+  getPlayoffGames,
   getOneGame,
   getStandings,
   addGame,
