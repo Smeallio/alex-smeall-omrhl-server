@@ -3,6 +3,7 @@ const knex = require("knex")(require("../knexfile"));
 const getAllAnnouncements = async (_req, res) => {
   try {
     const announcements = await knex("announcements");
+    announcements.sort((a, b) => new Date(b.date) - new Date(a.date));
     res.status(200).json(announcements);
   } catch (err) {
     res.status(500).send(`Error retrieving announcements from the database: ${err}`);
