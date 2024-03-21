@@ -87,6 +87,7 @@ const getSummarizedSkaterStats = async (_req, res) => {
         )
       )
       .leftJoin("players", "skaterStats.player_id", "players.id")
+      .where("game_type", "Regular Season")
       .groupBy("skaterStats.player_id")
       .orderBy("total_points", "desc");
     res.status(200).json(summedSkaterStats);
@@ -110,6 +111,7 @@ const getSummarizedGoalieStats = async (_req, res) => {
         knex.raw("ROUND(SUM(goalieStats.goalsAgainst) / COUNT(goalieStats.player_id), 2) AS goalsAgainst_average")
       )
       .leftJoin("players", "goalieStats.player_id", "players.id")
+      .where("game_type", "Regular Season")
       .groupBy("goalieStats.player_id")
       .orderBy("total_wins", "desc");
     res.status(200).json(summedGoalieStats);
