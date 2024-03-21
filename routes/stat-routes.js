@@ -9,6 +9,14 @@ router.route("/skaters/summary").get(statController.getSummarizedSkaterStats);
 
 router.route("/goalies/summary").get(statController.getSummarizedGoalieStats);
 
+router.route("/skaters/summary/playoffs").get(statController.getSummarizedPlayoffSkaterStats);
+
+router.route("/goalies/summary/playoffs").get(statController.getSummarizedPlayoffGoalieStats);
+
+router.route("/skaters/summary/playoffs/:teamId").get(statController.getSummarizedPlayoffSkaterStatsByTeam);
+
+router.route("/goalies/summary/playoffs/:teamId").get(statController.getSummarizedPlayoffGoalieStatsByTeam);
+
 router.route("/skaters/summary/:teamId").get(statController.getSummarizedSkaterStatsByTeam);
 
 router.route("/goalies/summary/:teamId").get(statController.getSummarizedGoalieStatsByTeam);
