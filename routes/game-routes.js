@@ -3,9 +3,11 @@ const gameController = require("../controllers/game-controllers");
 
 router.route("/").get(gameController.getAllGames).post(gameController.addGame);
 
-router.route("/season").get(gameController.getRegSeasonGames);
+router.route("/season").get(gameController.getAllRegSeasonGames);
 
-router.route("/playoffs").get(gameController.getPlayoffGames);
+router.route("/season/:seasonId").get(gameController.getOneRegSeasonGames);
+
+router.route("/playoffs").get(gameController.getAllPlayoffGames);
 
 router.route("/standings").get(gameController.getStandings);
 
