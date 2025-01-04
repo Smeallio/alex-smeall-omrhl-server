@@ -22,9 +22,9 @@ const getAllGames = async (_req, res) => {
   }
 };
 
-const getAllRegSeasonGames = async (_req, res) => {
+const getOneSeasonGames = async (req, res) => {
   try {
-    const games = await knex("games").where("game_type", "Regular Season");
+    const games = await knex("games").where({ season: req.params.seasonYear });
 
     games.sort((a, b) => {
       const dateA = new Date(a.date);
@@ -44,11 +44,9 @@ const getAllRegSeasonGames = async (_req, res) => {
   }
 };
 
-const getOneRegSeasonGames = async (req, res) => {
+const getAllRegSeasonGames = async (_req, res) => {
   try {
-    const games = await knex("games")
-      .where("game_type", "Regular Season")
-      .andWhere({ season: req.params.seasonId });
+    const games = await knex("games").where("game_type", "Regular Season");
 
     games.sort((a, b) => {
       const dateA = new Date(a.date);
@@ -197,8 +195,8 @@ const deleteGame = async (req, res) => {
 
 module.exports = {
   getAllGames,
+  getOneSeasonGames,
   getAllRegSeasonGames,
-  getOneRegSeasonGames,
   getAllPlayoffGames,
   getOneGame,
   getStandings,
