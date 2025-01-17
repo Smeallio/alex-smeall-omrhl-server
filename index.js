@@ -26,7 +26,7 @@ app.use((_req, res, next) => {
 app.use("/api/announcements", announcementRoutes);
 app.use("/api/games", gameRoutes);
 app.use("/api/players", playerRoutes);
-app.ise("/api/standings", standingsRoutes);
+app.use("/api/standings", standingsRoutes);
 app.use("/api/stats", statRoutes);
 app.use("/api/teams", teamRoutes);
 app.use("/api/users", userRoutes);
