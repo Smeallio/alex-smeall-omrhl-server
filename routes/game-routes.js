@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const gameController = require("../controllers/game-controllers");
+
 const allGamesController = require("../controllers/games/all-games-controllers");
 const singleGameController = require("../controllers/games/single-game-controllers");
 const regSeasonGamesController = require("../controllers/games/reg-season-games-controllers");
@@ -25,8 +25,6 @@ router
   .get(playoffGamesController.getOnePlayoffSeasonOfGames);
 
 router.route("/season/:seasonYear").get(allGamesController.getOneSeasonOfGames);
-
-router.route("/standings").get(gameController.getStandings); //Move this to a new file
 
 router
   .route("/:gameId")
